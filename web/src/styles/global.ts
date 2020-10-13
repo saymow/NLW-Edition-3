@@ -1,6 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
-const GlobalCss = createGlobalStyle`
+import { darkTheme } from "./theme";
+
+type themeType = typeof darkTheme;
+
+const GlobalCss = createGlobalStyle<{ theme: themeType }>`
   * {
     margin: 0;
     padding: 0;
@@ -9,11 +13,13 @@ const GlobalCss = createGlobalStyle`
 
   :root {
     font-size: 62.5%;
+    --background: ${({ theme }) => theme.background};
+    --text-primary: ${({ theme }) => theme.textPrimary}
   }
 
   body {
-    color: #fff;
-    background: #ebf2f5;
+    color: var(--text-primary);
+    background: var(--background);
   }
 
   body, input, button, textarea {

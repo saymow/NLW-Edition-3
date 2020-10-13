@@ -10,6 +10,8 @@ export const Container = styled.div`
 `;
 
 export const SideBar = styled.aside`
+  position: relative;
+
   width: 44rem;
   background: linear-gradient(329.54deg, #29b6d1 0%, #00c7c7 100%);
   padding: 8rem;

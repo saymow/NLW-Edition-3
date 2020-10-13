@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { Map, TileLayer } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+
+import { useGlobalContext } from "../../context";
 
 import mapMarkerSvg from "../../images/mapMarker.svg";
 
@@ -14,13 +16,21 @@ import {
   Content,
   CreateOrphanageLink,
 } from "./styles";
-
-console.log(process.env.REACT_APP_MAPBOX_TOKEN);
+import { useEffect } from "react";
+import ThemeSwitcher from "../../components/ThemeSwitcher";
 
 const OrphanagesMap: React.FC = () => {
+  const { theme } = useGlobalContext();
+  const [mapTheme, setMapTheme] = useState<string>();
+
+  useEffect(() => setMapTheme(theme === "light" ? "light-v10" : "dark-v10"), [
+    theme,
+  ]);
+
   return (
     <Container>
       <SideBar>
+        <ThemeSwitcher />
         <Header>
           <img src={mapMarkerSvg} alt="Logo" />
 
@@ -45,16 +55,13 @@ const OrphanagesMap: React.FC = () => {
         >
           {/* <TileLayer url="https://a.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
           <TileLayer
-            url={
-              "https://api.mapbox.com/styles/v1/mapbox/light-v10/tiles/256/{z}/{x}/{y}@2x?access_token=" +
-              process.env.REACT_APP_MAPBOX_TOKEN
-            }
+            url={`https://api.mapbox.com/styles/v1/mapbox/${mapTheme}/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
           />
         </Map>
       </Content>
 
       <CreateOrphanageLink to="">
-        <FiPlus size={32} color="#fff" />
+        <FiPlus size={32} color="var(--text-primary)" />
       </CreateOrphanageLink>
     </Container>
   );
