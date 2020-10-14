@@ -37,7 +37,7 @@ export default {
       open_on_weekends = false,
     } = req.body;
 
-    const requestImages = req.files as Express.Multer.File[];
+    const requestImages = (req.files || []) as Express.Multer.File[];
     const imagesPath = requestImages.map((image) => ({
       path: image.filename,
     }));

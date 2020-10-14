@@ -2,7 +2,14 @@ import path from "path";
 
 import multer from "multer";
 
-const tmpFolder = path.join(__dirname, "..", "..", "tmp");
+import { isTesting } from "../utils/constants";
+
+const tmpFolder = path.join(
+  __dirname,
+  "..",
+  "..",
+  isTesting() ? "tmp-test" : "tmp"
+);
 
 export default {
   directory: tmpFolder,
@@ -20,7 +27,6 @@ export default {
       destination: tmpFolder,
       filename(req, file, cb) {
         const fileName = `${Date.now()}_${file.originalname}`;
-        console.log(fileName);
 
         return cb(null, fileName);
       },
