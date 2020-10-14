@@ -14,12 +14,20 @@ const GlobalCss = createGlobalStyle<{ theme: themeType }>`
   :root {
     font-size: 62.5%;
     --background: ${({ theme }) => theme.background};
-    --text-primary: ${({ theme }) => theme.textPrimary}
+    --background-secondary: ${({ theme }) => theme.backgroundSecondary};
+    --text-primary: ${({ theme }) => theme.textPrimary};
+    --text-secondary: ${({ theme }) => theme.textSecondary};
+    --text-tertiary: ${({ theme }) => theme.textTertiary};
+    --background-input: ${({ theme }) => theme.inputBackground};
   }
 
   body {
     color: var(--text-primary);
     background: var(--background);
+  }
+
+  input,textarea{
+    background: ${({ theme }) => theme.inputBackground};
   }
 
   body, input, button, textarea {

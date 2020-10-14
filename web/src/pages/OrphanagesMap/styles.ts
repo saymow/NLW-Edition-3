@@ -1,3 +1,4 @@
+import { Popup } from "react-leaflet";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -71,5 +72,40 @@ export const CreateOrphanageLink = styled(Link)`
 
   &:hover {
     background: #17e6eb;
+  }
+`;
+
+export const CustomPopup = styled(Popup as any)`
+  .leaflet-popup-content-wrapper {
+    background: var(--background);
+    border-radius: 2rem;
+    box-shadow: none;
+
+    div {
+      color: #0089a5;
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0.8rem 1.2rem;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      a {
+        width: 4rem;
+        height: 4rem;
+        background: #15c3d6;
+
+        border-radius: 1.2rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .leaflet-popup-tip-container {
+    display: none;
   }
 `;

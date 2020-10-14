@@ -11,7 +11,7 @@ interface Req {
   instructions: string;
   opening_hours: string;
   imagesPath: Array<{ path: string }>;
-  open_on_weekends?: boolean;
+  open_on_weekends: "true" | "false";
 }
 
 class CreateOrphanageService {
@@ -21,6 +21,7 @@ class CreateOrphanageService {
     const data = {
       ...req,
       images: req.imagesPath,
+      open_on_weekends: req.open_on_weekends === "true",
     };
 
     const schema = Yup.object().shape({

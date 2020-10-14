@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { FiPlus } from "react-icons/fi";
-import { Map, TileLayer } from "react-leaflet";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FiPlus, FiArrowRight } from "react-icons/fi";
+import { Map, Marker, TileLayer } from "react-leaflet";
 
-import "leaflet/dist/leaflet.css";
-
-import { useGlobalContext } from "../../context";
+import api from "../../services/api";
 
 import mapMarkerSvg from "../../images/mapMarker.svg";
+
+import { useGlobalContext } from "../../context";
+import ThemeSwitcher from "../../components/ThemeSwitcher";
+import mapIcon from "../../utils/mapIcon";
 
 import {
   Container,
@@ -15,17 +18,26 @@ import {
   Footer,
   Content,
   CreateOrphanageLink,
+  CustomPopup,
 } from "./styles";
-import { useEffect } from "react";
-import ThemeSwitcher from "../../components/ThemeSwitcher";
+import useGetMapTheme from "../../hooks/useGetMapTheme";
+
+interface Orphanage {
+  id: string;
+  latitude: number;
+  longitude: number;
+  name: string;
+}
 
 const OrphanagesMap: React.FC = () => {
-  const { theme } = useGlobalContext();
-  const [mapTheme, setMapTheme] = useState<string>();
+  const mapTheme = useGetMapTheme();
+  const [orphanages, setOrphanges] = useState<Orphanage[]>([]);
 
-  useEffect(() => setMapTheme(theme === "light" ? "light-v10" : "dark-v10"), [
-    theme,
-  ]);
+  useEffect(() => {
+    api.get("orphanages").then((response) => {
+      setOrphanges(response.data);
+    });
+  }, []);
 
   return (
     <Container>
@@ -57,10 +69,24 @@ const OrphanagesMap: React.FC = () => {
           <TileLayer
             url={`https://api.mapbox.com/styles/v1/mapbox/${mapTheme}/tiles/256/{z}/{x}/{y}@2x?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`}
           />
+          {orphanages.map((orphanage) => (
+            <Marker
+              key={orphanage.id}
+              icon={mapIcon}
+              position={[orphanage.latitude, orphanage.longitude]}
+            >
+              <CustomPopup closeButton={false} minWidth={240} maxWidth={240}>
+                {orphanage.name}
+                <Link to={`/orphanages/${orphanage.id}`}>
+                  <FiArrowRight size={32} color="#Fff" />
+                </Link>
+              </CustomPopup>
+            </Marker>
+          ))}
         </Map>
       </Content>
 
-      <CreateOrphanageLink to="">
+      <CreateOrphanageLink to="/orphanages/create">
         <FiPlus size={32} color="var(--text-primary)" />
       </CreateOrphanageLink>
     </Container>
