@@ -33,7 +33,7 @@ describe("Orphanage creation", () => {
 
     const qtyOfImagesUploaded = getFilesNumberOnTmpFolder();
 
-    expect(qtyOfImagesUploaded).toBe(qtyOfImagesUploaded);
+    expect(qtyOfImagesUploaded).toBe(2);
 
     expect(bodyKeys).toEqual([
       "id",
